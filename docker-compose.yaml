@@ -1,0 +1,55 @@
+version: "3.4"
+
+services:
+  fess:
+    image: ghcr.io/codelibs/fess:14.4.0
+    environment:
+      - "ES_HTTP_URL=http://elasticsearch:9200"
+      - "FESS_DICTIONARY_PATH=/usr/share/elasticsearch/config/dictionary/"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - elasticsearch
+    volumes:
+      - fess-data:/usr/share/elasticsearch/config/dictionary
+
+  elasticsearch:
+    image: ghcr.io/codelibs/fess-elasticsearch:8.4.2
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=fess-es
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "FESS_DICTIONARY_PATH=/usr/share/elasticsearch/config/dictionary"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+      - fess-data:/usr/share/elasticsearch/config/dictionary
+    restart: unless-stopped
+
+  proxy:
+    image: dperson/torproxy
+    restart: always
+
+  novnc:
+    build: ./docker/vnc
+    environment:
+      - VNC_PASSWORD=password
+      - HTTP_PROXY=http://proxy:8118
+      - HTTPS_PROXY=http://proxy:8118
+      - http_proxy=http://proxy:8118
+      - https_proxy=http://proxy:8118
+      - no_proxy=127.0.0.1,localhost,192.168.2.0/24,fess
+    ports:
+      - "8000:80"
+    volumes:
+      - ./data:/data
+
+volumes:
+  fess-data:
+  es-data:
