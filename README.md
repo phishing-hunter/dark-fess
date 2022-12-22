@@ -24,7 +24,7 @@ $ docker-compose pull
 
 ## コンテナの起動
 ```
-$ docker-compose up -d
+$ docker-compose up -d --build
 ```
 
 ## 使い方
