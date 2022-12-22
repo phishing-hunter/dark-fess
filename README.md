@@ -28,12 +28,12 @@ $ docker-compose up -d
 ```
 
 ## 使い方
-dockerを実行しているホストから「http://127.0.0.1:8000」へアクセスします。  
+dockerを実行しているホストから「http://127.0.0.1:8000 」へアクセスします。  
 VNCのパスワード(default: password)を入力すると、Dockerコンテナ内のUbuntuへ接続できます。  
 コンテナ内のFirefoxを起動するとTorを経由してインターネットに接続ができます。  
 
 ## クローラーの設定
-vncのubuntuからfirefoxを起動し「http://fess:8080」へアクセスします。(admin/admin)  
+vncのubuntuからfirefoxを起動し「http://fess:8080 」へアクセスします。(admin/admin)  
 管理画面から「{role}admin-api」のパーミッションを設定したアクセストークンを作成します。  
 続いてvnc内のターミナルを起動し以下の環境変数に設定します。  
 ```
